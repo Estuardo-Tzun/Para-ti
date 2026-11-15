@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Para mi amor - Graduación</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0d1117 0%, #161b22 50%, #1f242d 100%);
+            color: #e6edf3;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 700px;
+            width: 100%;
+            background: rgba(22, 27, 34, 0.85);
+            backdrop-filter: blur(12px);
+            border: 1px solid #30363d;
+            border-radius: 16px;
+            padding: 40px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
+            text-align: center;
+            position: relative;
+        }
+
+        h1 {
+            font-size: 1.8rem;
+            color: #f0f6fc;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        .subtitle {
+            color: #8b949e;
+            font-size: 1rem;
+            margin-bottom: 30px;
+        }
+
+        /* Contador */
+        .countdown-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+            margin-bottom: 35px;
+        }
+
+        .time-box {
+            background: #0d1117;
+            border: 1px solid #30363d;
+            border-radius: 12px;
+            padding: 15px 10px;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.4);
+        }
+
+        .time-number {
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: #58a6ff;
+            display: block;
+        }
+
+        .time-label {
+            font-size: 0.8rem;
+            color: #8b949e;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-top: 5px;
+        }
+
+        /* Carta Oculta / Revelada */
+        #letter-section {
+            display: none;
+            text-align: left;
+            animation: fadeIn 1.5s ease forwards;
+            border-top: 1px solid #30363d;
+            padding-top: 30px;
+            margin-top: 20px;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .letter-content p {
+            margin-bottom: 18px;
+            line-height: 1.7;
+            color: #c9d1d9;
+            font-size: 1.05rem;
+        }
+
+        .signature {
+            margin-top: 30px;
+            font-style: italic;
+            color: #58a6ff;
+            font-weight: 500;
+        }
+
+        /* Botones de Control y Vista Previa */
+        .actions {
+            margin-top: 30px;
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            background: #238636;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            cursor: pointer;
+            font-weight: 600;
+            transition: background 0.2s;
+        }
+
+        .btn:hover {
+            background: #2ea043;
+        }
+
+        .btn-secondary {
+            background: #21262d;
+            border: 1px solid #30363d;
+            color: #c9d1d9;
+        }
+
+        .btn-secondary:hover {
+            background: #30363d;
+        }
+
+        /* Editor Modal */
+        #editor-modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.8);
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            z-index: 1000;
+        }
+
+        .modal-content {
+            background: #161b22;
+            border: 1px solid #30363d;
+            border-radius: 12px;
+            width: 100%;
+            max-width: 600px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+        }
+
+        .modal-content h3 {
+            margin-bottom: 15px;
+            color: #f0f6fc;
+        }
+
+        textarea {
+            width: 100%;
+            height: 200px;
+            background: #0d1117;
+            border: 1px solid #30363d;
+            color: #e6edf3;
+            padding: 12px;
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 0.95rem;
+            resize: vertical;
+            margin-bottom: 20px;
+        }
+
+        @media (max-width: 600px) {
+            .countdown-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .container {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Para el gran día de mi niña hermosa</h1>
+        <p class="subtitle">Cuenta regresiva hacia tu gran dia  • 27 de Noviembre, 2026</p>
+
+        <!-- Contador Regresivo -->
+        <div id="countdown-container" class="countdown-grid">
+            <div class="time-box">
+                <span id="days" class="time-number">00</span>
+                <span class="time-label">Días</span>
+            </div>
+            <div class="time-box">
+                <span id="hours" class="time-number">00</span>
+                <span class="time-label">Horas</span>
+            </div>
+            <div class="time-box">
+                <span id="minutes" class="time-number">00</span>
+                <span class="time-label">Minutos</span>
+            </div>
+            <div class="time-box">
+                <span id="seconds" class="time-number">00</span>
+                <span class="time-label">Segundos</span>
+            </div>
+        </div>
+
+        <!-- Sección de la Carta -->
+        <div id="letter-section">
+            <div id="letter-text" class="letter-content">
+                <p>Mi amor,</p>
+                <p>Hoy 27 de noviembre del 2026 es tu gran día. Hoy te gradúas con honores de Bachillerato. Me siento muy, muy orgulloso de ti.</p>
+                <p>No me importa si no te pude ver en persona, quiero que sepas que todo tu esfuerzo en estos dos años rindió sus frutos. Sin importar los problemas y los obstáculos, nunca te rendiste.</p>
+                <p>Espero que este abrazo te llegue directo a tu niña interior. Te amo demasiado y quiero que sigas peleando como siempre lo has hecho, mi niña hermosa.</p>
+                <p class="signature">Con todo mi amor, por siempre tuyo. ❤️‍🩹</p>
+            </div>
+        </div>
+
+        <!-- Botones de Control 
+        <div class="actions">
+            <button class="btn" onclick="togglePreview()">Vista previa final</button>
+            <button class="btn btn-secondary" onclick="openEditor()">Personalizar mensaje</button>
+        </div>
+    </div>
+-->
+
+    <!-- Modal para editar el mensaje -->
+    <div id="editor-modal">
+        <div class="modal-content">
+            <h3>Personaliza tu mensaje</h3>
+            <textarea id="custom-message-input">Mi amor,
+
+Hoy 27 de noviembre del 2026 es tu gran día. Hoy te gradúas con honores de Bachillerato. Me siento muy, muy orgulloso de ti.
+
+No me importa si no te pude ver en persona, quiero que sepas que todo tu esfuerzo en estos dos años rindió sus frutos. Sin importar los problemas y los obstáculos, nunca te rendiste.
+
+Te amo demasiado y quiero que sigas peleando como siempre lo has hecho, mi niña hermosa.</textarea>
+            <div style="text-align: right;">
+                <button class="btn btn-secondary" onclick="closeEditor()">Cancelar</button>
+                <button class="btn" onclick="saveMessage()">Guardar cambios</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const targetDate = new Date("November 27, 2026 00:00:00").getTime();
+        let previewMode = false;
+
+        function updateCountdown() {
+            if (previewMode) return;
+
+            const now = new Date().getTime();
+            const difference = targetDate - now;
+
+            if (difference <= 0) {
+                document.getElementById("countdown-container").style.display = "none";
+                document.getElementById("letter-section").style.display = "block";
+                return;
+            }
+
+            const days = Math.floor(difference / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((difference % (1000 * 60)) / 1000);
+
+            document.getElementById("days").innerText = String(days).padStart(2, '0');
+            document.getElementById("hours").innerText = String(hours).padStart(2, '0');
+            document.getElementById("minutes").innerText = String(minutes).padStart(2, '0');
+            document.getElementById("seconds").innerText = String(seconds).padStart(2, '0');
+        }
+
+        setInterval(updateCountdown, 1000);
+        updateCountdown();
+
+        function togglePreview() {
+            previewMode = !previewMode;
+            const letterSec = document.getElementById("letter-section");
+            const countSec = document.getElementById("countdown-container");
+            
+            if (previewMode) {
+                countSec.style.display = "none";
+                letterSec.style.display = "block";
+            } else {
+                countSec.style.display = "grid";
+                letterSec.style.display = "none";
+            }
+        }
+
+        function openEditor() {
+            document.getElementById("editor-modal").style.display = "flex";
+        }
+
+        function closeEditor() {
+            document.getElementById("editor-modal").style.display = "none";
+        }
+
+        function saveMessage() {
+            const newText = document.getElementById("custom-message-input").value;
+            localStorage.setItem('custom_grad_message', newText);
+            const paragraphs = newText.split('\n\n').map(p => `<p>${p.replace(/\n/g, '<br>')}</p>`).join('');
+            document.getElementById("letter-text").innerHTML = paragraphs;
+            closeEditor();
+        }
+
+        window.onload = function() {
+            const saved = localStorage.getItem('custom_grad_message');
+            if (saved) {
+                document.getElementById("custom-message-input").value = saved;
+                saveMessage();
+            }
+        };
+    </script>
+</body>
+</html>
